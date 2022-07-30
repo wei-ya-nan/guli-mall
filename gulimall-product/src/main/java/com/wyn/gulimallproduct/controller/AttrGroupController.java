@@ -36,9 +36,9 @@ public class AttrGroupController {
      */
     @RequestMapping("/list/{catelogId}")
     //@RequiresPermissions("gulimallproduct:attrgroup:list")
-    public R list(@RequestParam Map<String, Object> params,@PathVariable Long catelogId){
+    public R list(@RequestParam Map<String, Object> params,@PathVariable("catelogId") Long catelogId){
 //        PageUtils page = attrGroupService.queryPage(params);
-        PageUtils page =  attrGroupService.queryPage(params,catelogId)
+        PageUtils page =  attrGroupService.queryPage(params,catelogId);
 
         return R.ok().put("page", page);
     }
