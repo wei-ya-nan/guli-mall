@@ -70,7 +70,7 @@ public class CategoryController {
     @RequestMapping("/update")
     //@RequiresPermissions("gulimallproduct:category:update")
     public R update(@RequestBody CategoryEntity category){
-        categoryService.updateById(category);
+        categoryService.updateCascade(category);
 
         return R.ok();
     }
