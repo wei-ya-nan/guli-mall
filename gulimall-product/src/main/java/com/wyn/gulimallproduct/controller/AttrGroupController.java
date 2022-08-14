@@ -2,13 +2,18 @@ package com.wyn.gulimallproduct.controller;
 
 import com.wyn.common.utils.PageUtils;
 import com.wyn.common.utils.R;
+import com.wyn.gulimallproduct.entity.AttrEntity;
 import com.wyn.gulimallproduct.entity.AttrGroupEntity;
+import com.wyn.gulimallproduct.service.AttrAttrgroupRelationService;
 import com.wyn.gulimallproduct.service.AttrGroupService;
+import com.wyn.gulimallproduct.service.AttrService;
 import com.wyn.gulimallproduct.service.CategoryService;
+import com.wyn.gulimallproduct.vo.AttrGroupRelationVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -27,6 +32,34 @@ public class AttrGroupController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private AttrService attrService;
+
+    @Autowired
+    private AttrAttrgroupRelationService relationService;
+
+    @PostMapping("/attr/relation")
+    public R addRelation(@RequestBody List<AttrGroupRelationVo> vos) {
+        relationService.saveBatch(vos);
+
+        return R.ok();
+
+    }
+
+    @GetMapping("/{attrgroupId}/attr/relation")
+    public R attrRelation(@PathVariable("attrgroupId") Long attrgroupId) {
+        List<AttrEntity> entitys = attrService.getRelationAttr(attrgroupId);
+        return R.ok().put("data", entitys);
+
+    }
+
+    @GetMapping("/{attrgroup/{attrgroupId}/noattr/relation")
+    public R attrNoRelation(@PathVariable("attrgroupId") Long attrgroupId,
+                            @RequestParam Map<String, Object> params) {
+        PageUtils page = attrService.getNorelationAttr(params, attrgroupId);
+        return R.ok().put("page", page);
+    }
 
     /**
      * 列表
